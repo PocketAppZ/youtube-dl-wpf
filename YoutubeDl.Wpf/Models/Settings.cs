@@ -122,7 +122,7 @@ namespace YoutubeDl.Wpf.Models
         /// </returns>
         public static async Task<(Settings settings, string? errMsg)> LoadSettingsAsync(CancellationToken cancellationToken = default)
         {
-            var (settings, errMsg) = await FileHelper.LoadJsonAsync<Settings>("Settings.json", FileHelper.commonJsonDeserializerOptions, cancellationToken).ConfigureAwait(false);
+            var (settings, errMsg) = await FileHelper.LoadJsonAsync("Settings.json", SettingsJsonSerializerContext.Default.Settings, cancellationToken).ConfigureAwait(false);
             if (errMsg is null && settings.Version != DefaultVersion)
             {
                 settings.UpdateSettings();
@@ -141,7 +141,7 @@ namespace YoutubeDl.Wpf.Models
         /// Null if no errors occurred.
         /// </returns>
         public static Task<string?> SaveSettingsAsync(Settings settings, CancellationToken cancellationToken = default)
-            => FileHelper.SaveJsonAsync("Settings.json", settings, FileHelper.commonJsonSerializerOptions, false, false, cancellationToken);
+            => FileHelper.SaveJsonAsync("Settings.json", settings, SettingsJsonSerializerContext.Default.Settings, false, false, cancellationToken);
 
         /// <summary>
         /// Updates the current object to the latest version.
